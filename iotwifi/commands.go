@@ -2,6 +2,7 @@ package iotwifi
 
 import (
 	"os/exec"
+	"strings"
 
 	"github.com/bhoriuchi/go-bunyan/bunyan"
 )
@@ -22,7 +23,9 @@ func (c *Command) RemoveApInterface() {
 
 // ConfigureApInterface configured the AP interface.
 func (c *Command) ConfigureApInterface() {
-	cmd := exec.Command("ifconfig", "uap0", c.SetupCfg.HostApdCfg.Ip)
+	address := strings.Split(c.SetupCfg.HostApdCfg.Ip, " ")
+	args := append([]string{"uap0"}, address...);
+	cmd := exec.Command("ifconfig", args...)
 	cmd.Start()
 	cmd.Wait()
 }
